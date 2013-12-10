@@ -1,0 +1,6 @@
+r1 = 1
+c1 = 1
+self.lga.DrawPoint(r1+0.0,c1+0.0,EEEE)
+self.lga.DrawPoint(r1+0.0,c1+1.0,EENE)
+self.lga.DrawPoint(r1+1.0,c1+0.0,NENE)
+self.lga.DrawPoint(r1+2.0,c1+1.0,NENW)
