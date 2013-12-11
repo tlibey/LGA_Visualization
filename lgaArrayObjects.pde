@@ -117,6 +117,56 @@ class revWalls //and snks
 {
  
 }
+void addWallLine10x()
+{
+  float scale2 = scale/sin(PI/3);//
+  int y = round(mouseY/float(scale));
+  int x = round(mouseX/scale2); 
+   if(y%2!=0)
+     {x = floor(mouseX/scale2);}
+  for(int jj = x; jj<x+10;jj++)
+  {
+         boolean alreadyExists = false;
+  for(int ii = 0; ii<rwalls.size();ii++)
+  {
+  if(rwalls.get(ii).xPos == jj && rwalls.get(ii).yPos == y)
+    {
+      alreadyExists = true;
+    }
+  }
+  println(alreadyExists);
+  if(!alreadyExists)
+  {
+  rwalls.add(new Wall(jj,y,-1));
+  }
+    
+  }
+}
+void addWallLine10y()
+{
+  float scale2 = scale/sin(PI/3);//
+  int y = round(mouseY/float(scale));
+  int x = round(mouseX/scale2); 
+   if(y%2!=0)
+     {x = floor(mouseX/scale2);}
+  for(int jj = y; jj<y+10;jj++)
+  {
+         boolean alreadyExists = false;
+  for(int ii = 0; ii<rwalls.size();ii++)
+  {
+  if(rwalls.get(ii).xPos == x && rwalls.get(ii).yPos == jj)
+    {
+      alreadyExists = true;
+    }
+  }
+  println(alreadyExists);
+  if(!alreadyExists)
+  {
+  rwalls.add(new Wall(x,jj,-1));
+  }
+    
+  }
+}
 void addNew()
  {  
   float scale2 = scale/sin(PI/3);//
@@ -430,6 +480,56 @@ class Particles
   }
    
  }
+ void addParLine10x()
+{
+  float scale2 = scale/sin(PI/3);//
+  int y = round(mouseY/float(scale));
+  int x = round(mouseX/scale2); 
+   if(y%2!=0)
+     {x = floor(mouseX/scale2);}
+  for(int jj = x; jj<x+10;jj++)
+  {
+         boolean alreadyExists = false;
+  for(int ii = 0; ii<pars.size();ii++)
+  {
+  if(pars.get(ii).xPos == jj && pars.get(ii).yPos == y)
+    {
+      alreadyExists = true;
+    }
+  }
+  if(!alreadyExists)
+  {
+    int newdirs = 60*(int)random(0,7);
+  pars.add(new Particle(jj,y,newdirs));
+  }
+    
+  }
+}
+void addParLine10y()
+{
+  float scale2 = scale/sin(PI/3);//
+  int y = round(mouseY/float(scale));
+  int x = round(mouseX/scale2); 
+   if(y%2!=0)
+     {x = floor(mouseX/scale2);}
+  for(int jj = y; jj<y+10;jj++)
+  {
+         boolean alreadyExists = false;
+  for(int ii = 0; ii<pars.size();ii++)
+  {
+  if(pars.get(ii).xPos == x && pars.get(ii).yPos == jj)
+    {
+      alreadyExists = true;
+    }
+  }
+  if(!alreadyExists)
+  {
+   int newdirs = 60*(int)random(0,7);
+  pars.add(new Particle(x,jj,newdirs));
+  }
+    
+  }
+}
  void eraseAtMouse()
  {
     float scale2 = scale/sin(PI/3);//

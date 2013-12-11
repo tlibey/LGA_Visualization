@@ -51,7 +51,7 @@ boolean runContinuously = false;
 
 void setup()
 {
- size(500,500); //change here to find a display that works for you!
+ size(1000,740); //change here to find a display that works for you!
   font = createFont("Arial",16,true);
   ps.setup2parMatrix();
 gui = new GUI(); 
@@ -125,6 +125,13 @@ void handleInput()
   {
    ps.removeLast(); 
   }
+    if(checkKey('L') && KeyPressLock(500))
+  {
+   ps.addParLine10x(); 
+  }if(checkKey('K') && KeyPressLock(500))
+  {
+   ps.addParLine10y(); 
+  }
   
   }
   else if(modeToggle == 0) //wall drawing
@@ -148,7 +155,7 @@ void handleInput()
   }
  
   }
-  else if(modeToggle == 2)
+  else if(modeToggle == 2) //rev/snk
   {
       if(checkKey('D')|| (mousePressed && mouseButton == LEFT && !gui.isinGUI())  && KeyPressLock(1000))
   {
@@ -166,6 +173,13 @@ void handleInput()
   if(checkKey('R') && !checkKey(CONTROL) && KeyPressLock(500))
   {
    rws.toggleType(); 
+  }
+  if(checkKey('L') && KeyPressLock(500))
+  {
+   rws.addWallLine10x(); 
+  }if(checkKey('K') && KeyPressLock(500))
+  {
+   rws.addWallLine10y(); 
   }
     
     

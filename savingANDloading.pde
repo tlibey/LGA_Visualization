@@ -150,15 +150,28 @@ void lgaExport() //saving last line!!
   String[] fName = split(workingFile,'.');
   String expName = fName[0] + "_exp." + fName[1]; 
   String[] gateSet = {};
-  if(srcs.srcs.size()>0)
-  {int pdir = -srcs.srcs.get(0).dir;
-   if(pdir==360)
-     pdir = 0;
-    String srcSet = "self.lga.SRCVPARTICLES = " + checkDir(pdir,1);
-  gateSet = append(gateSet,srcSet);
-  }
+  int srcCounter = 0;
   gateSet = append(gateSet,"r1 = 1");
   gateSet = append(gateSet,"c1 = 1");
+  for(int ii = 0; ii<srcs.srcs.size();ii++)
+  {
+  int pdir = -srcs.srcs.get(ii).dir;
+   if(pdir!=360 && pdir !=3){
+    String srcSet = "self.lga.SRCVPARTICLES = " + checkDir(pdir,1);
+    if(!gateSet[gateSet.length-1].equals(srcSet))
+    {
+      gateSet = append(gateSet,srcSet);
+      srcCounter++;
+    }}
+  
+  
+  }
+  if(srcCounter>1)
+  {
+      String warning = "WARNING: LGA does not currently support MULTI directional sources";
+      println(warning);
+      gateSet = append(gateSet,warning);
+  }
   //adding walls to string, one String object per wall
   float[] xSet = {};
   float[] ySet = {};
@@ -190,15 +203,7 @@ void lgaExport() //saving last line!!
     String thisDir = (checkDir(wall.dir,0));
     dirSet = append(dirSet,thisDir);
     keep = append(keep,1);
-    for(int jj = 0; jj<srcs.srcs.size();jj++)
-    {
-      if(srcs.srcs.get(ii).dir != srcs.srcs.get(jj).dir && !(srcs.srcs.get(ii).dir==-3 || srcs.srcs.get(jj).dir==-3))
-     {
-       String warning = "WARNING: LGA does not currently support MULTI directional sources";
-      println(warning);
-      dirSet = append(dirSet,warning);
-     } 
-     }
+    
   
   }
   for(int ii = 0; ii<ps.pars.size(); ii ++)
@@ -267,6 +272,8 @@ String checkDir(int dir,int wORp)
    return "SNK";
    case -3:
    return "SRCA";
+   case -360:
+   return "SRC";
    default:
    return "SRCV";
       
