@@ -82,6 +82,10 @@ class GUI
     buttons.add(new Button(xGUIStart+buffer+7*buttonW,yGUIStart+buffer+2*buttonH,buttonW,buttonH,"exportLGA"));
         
     buttons.add(new Button(xGUIStart+buffer+0*buttonW,yGUIStart+buffer+3*buttonH,buttonW,buttonH,"toggleGrid"));
+    //stat buttons (have to be last added)
+    buttons.add(new Button(xGUIStart+buffer+1*buttonW,yGUIStart+buffer+3*buttonH,buttonW,buttonH,"particleCount"));
+    buttons.add(new Button(xGUIStart+buffer+2*buttonW,yGUIStart+buffer+3*buttonH,buttonW,buttonH,"leftCount"));
+    buttons.add(new Button(xGUIStart+buffer+3*buttonW,yGUIStart+buffer+3*buttonH,buttonW,buttonH,"rightCount"));
 
   }
   boolean isinGUI() //used to ensure that particles/walls are not placed within the gui;
@@ -117,6 +121,29 @@ class GUI
   {
     buttons.get(ii).showButton();
   } 
+  showStats();
+  }
+  
+  void showStats()
+  {
+      buttons.get(buttons.size()-3).bText = "all par"+ps.pars.size();
+      int lefts = 0;
+      int rights = 0;
+      for(int ii = 0; ii<ps.pars.size();ii++)
+      {
+       if(ps.pars.get(ii).xPos>24)
+      {
+       rights++;
+      } 
+      else if(ps.pars.get(ii).xPos<20)
+      {
+       lefts++; 
+      }
+      }
+      buttons.get(buttons.size()-2).bText = "Left par"+lefts;
+      buttons.get(buttons.size()-1).bText = "Right par"+rights;
+
+    
   }
   
   void checkButtons()
