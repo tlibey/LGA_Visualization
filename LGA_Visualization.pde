@@ -18,6 +18,7 @@ Thanks!
 
 //To implement
 /*
+1) file io to folder
 2) comments/clean code
 
 Limitations
@@ -51,7 +52,7 @@ boolean runContinuously = false;
 
 void setup()
 {
- size(1000,740); //change here to find a display that works for you!
+ size(1200,900); //change here to find a display that works for you!
   font = createFont("Arial",16,true);
   ps.setup2parMatrix();
 gui = new GUI(); 
