@@ -18,12 +18,8 @@ Thanks!
 
 //To implement
 /*
-1) 2 particle collision matrix change during reversing
 2) comments/clean code
-4) srcs and visualization
 7) cleaned up ui/button order
-8) better text input or file load ui
-9) better eraser fidelity
 
 Limitations
 **take care to set your r1 and c1 values to match your refl walls based on your drawing. 
@@ -47,6 +43,7 @@ int scale = 40; // hexagonal lattice with lines "scale" px long
 Particles ps = new Particles(); //global
 Walls ws = new Walls(); //global
 revWalls rws = new revWalls();
+Sources srcs = new Sources();
 int modeToggle = 0; // 0 wall mode, 1 particle mode, 2 rwalls
 PFont font;
 GUI gui;
@@ -82,6 +79,7 @@ void draw()
    ps.drawParticles(); 
    ws.drawWalls();
    rws.drawWalls();
+   srcs.drawSources();
 //  }
  if(gettingString)
   {
@@ -101,13 +99,13 @@ void handleInput()
   if(checkKey('T') && KeyPressLock(500))
   {
     modeToggle ++;
-    if(modeToggle>2)
+    if(modeToggle>3)
         modeToggle = 0;  
   }
   if(checkKey(CONTROL) && checkKey('R') && KeyPressLock(500))
   {
    ps.reverseDirection();
-  println("rever"); 
+  println("reverse Particles"); 
   }
   if(modeToggle==1) // particles
   {
@@ -139,7 +137,7 @@ void handleInput()
    if(checkKey('E') || (mousePressed && mouseButton == RIGHT && !gui.isinGUI()) && KeyPressLock(1000))
   {
    ws.eraseAtMouse(); 
-  }
+  } 
   if(checkKey('R') && !checkKey(CONTROL) && KeyPressLock(500))
   {
    ws.changeDrawDirection(); 
@@ -173,6 +171,26 @@ void handleInput()
     
     
     
+  }
+  if(modeToggle==3) // sources
+  {
+ if(checkKey('D') || (mousePressed && mouseButton == LEFT && !gui.isinGUI()) && KeyPressLock(1000))
+  {
+   srcs.addNew(); 
+  }
+   if(checkKey('E')|| (mousePressed && mouseButton == RIGHT && !gui.isinGUI()) && KeyPressLock(1000))
+  {
+   srcs.eraseAtMouse(); 
+  }
+  if(checkKey('R') && !checkKey(CONTROL) && KeyPressLock(500))
+  {
+   srcs.changeSourceDirection(); 
+  }
+  
+  if(checkKey('Z') && checkKey(CONTROL) && KeyPressLock(1000))
+  {
+   srcs.removeLast(); 
+  }
   }
     
   

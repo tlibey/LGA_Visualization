@@ -79,8 +79,9 @@ class GUI
     buttons.add(new Button(xGUIStart+buffer+4*buttonW,yGUIStart+buffer+2*buttonH,buttonW,buttonH,"changeScale"));
     buttons.add(new Button(xGUIStart+buffer+5*buttonW,yGUIStart+buffer+2*buttonH,buttonW,buttonH,"runSpeedUp"));
     buttons.add(new Button(xGUIStart+buffer+6*buttonW,yGUIStart+buffer+2*buttonH,buttonW,buttonH,"runSpeedDown"));
-    buttons.add(new Button(xGUIStart+buffer+7*buttonW,yGUIStart+buffer+2*buttonH,buttonW,buttonH,"togRevSrc"));
-
+    buttons.add(new Button(xGUIStart+buffer+7*buttonW,yGUIStart+buffer+2*buttonH,buttonW,buttonH,"togRevSnk"));
+    buttons.add(new Button(xGUIStart+buffer+buttonW,yGUIStart+buffer+3*buttonH,buttonW,buttonH,"rotateSource"));
+    
   }
   boolean isinGUI() //used to ensure that particles/walls are not placed within the gui;
   {
@@ -102,7 +103,9 @@ class GUI
     if(modeToggle==0)
         modeDisp = "Wall";
     else if(modeToggle == 2)
-        modeDisp = "Rev/Src";
+        modeDisp = "Rev/Snk";
+    else if(modeToggle == 3)
+        modeDisp = "Source";
     textAlign(LEFT);
     text("Mode: " + modeDisp, buffer, yGUIStart + 4*buffer);
     textAlign(CENTER);
@@ -130,18 +133,19 @@ class GUI
    lastPress = millis();
    if(pressed=="TogDrawMode"){
          modeToggle ++;
-         if(modeToggle>2)
+         if(modeToggle>3)
             modeToggle = 0; 
          if(modeToggle==0)
          {println("wallMode");}
         else if(modeToggle ==1)
          {println("particleMode");}
         else if(modeToggle ==2)
-        {println("Rev/SrcMode");}
+        {println("Rev/SnkMode");}
+        else if(modeToggle ==3)
+        {println("SrcMode");}
    }
    else if(pressed == "OneStep"){
     ps.updateParticles(ws);
-
   
    }
    else if(pressed == "SaveAll")
@@ -154,6 +158,7 @@ class GUI
     ws.clearWalls();
     ps.clearParticles();
     rws.clearWalls();
+    srcs.clearSources();
     loadFile();
     ps.time = 0;
     ps.timeStep = 1;
@@ -178,6 +183,8 @@ class GUI
     ws.clearWalls();
     ps.clearParticles();
     rws.clearWalls();
+    srcs.clearSources();
+
    }
    else if(pressed == "reverseParticles")
    {
@@ -194,6 +201,11 @@ class GUI
      
    ws.changeDrawDirection(); 
    } 
+   else if(pressed == "rotateSource")
+   {
+     
+   srcs.changeSourceDirection(); 
+   }
    else if(pressed == "toggleGrid")
    {
      this.gridOn = !this.gridOn;     
@@ -214,7 +226,7 @@ class GUI
    {
      this.runSpeed++;    
    }
-   else if(pressed == "togRevSrc")
+   else if(pressed == "togRevSnk")
    {
      rws.toggleType();   
    }    

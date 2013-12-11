@@ -23,6 +23,12 @@ void saveAll()
    Wall wall = rws.rwalls.get(ii);
   String thisWall = "rW," + wall.xPos + "," + wall.yPos + "," + wall.dir; 
   gateSet = append(gateSet,thisWall);
+  } 
+  for(int ii = 0; ii<srcs.srcs.size(); ii ++)
+  {
+   Wall wall = srcs.srcs.get(ii);
+  String thisWall = "sR," + wall.xPos + "," + wall.yPos + "," + wall.dir; 
+  gateSet = append(gateSet,thisWall);
   }
   println("saving...");
   saveStrings(fName,gateSet);
@@ -49,10 +55,15 @@ void loadFile()
    ws.walls.add(new Wall(x,y,d));
    println("Loaded wall at: " + x + "," + y + " @" + d + "degrees");
   }
-   if(thisGate[0].equals("rW"))
+  else if(thisGate[0].equals("rW"))
   {
    rws.rwalls.add(new Wall(x,y,d));
    println("Loaded rwall at: " + x + "," + y + " @" + d + "degrees");
+  }
+   else if(thisGate[0].equals("sR"))
+  {
+   srcs.srcs.add(new Wall(x,y,d));
+   println("Loaded source at: " + x + "," + y + " @" + d + "degrees");
   }
  else if(thisGate[0].equals("P"))
   {
@@ -101,7 +112,21 @@ void lgaExport() //saving last line!!
        xS = rws.rwalls.get(ii).xPos; 
       }
       
-  }  
+  } 
+  for(int ii = 0; ii <srcs.srcs.size();ii++)
+  {
+    if(srcs.srcs.get(ii).yPos<=yS)
+    {
+      yS = srcs.srcs.get(ii).yPos;
+      
+    }
+    if(srcs.srcs.get(ii).xPos<=xS)
+      {
+       xS = srcs.srcs.get(ii).xPos; 
+      }
+     
+      
+  } 
   for(int ii = 0; ii <ps.pars.size();ii++)
   {
     if(ps.pars.get(ii).yPos<=yS)
@@ -119,6 +144,13 @@ void lgaExport() //saving last line!!
   String[] fName = split(workingFile,'.');
   String expName = fName[0] + "_exp." + fName[1]; 
   String[] gateSet = {};
+  if(srcs.srcs.size()>0)
+  {int pdir = -srcs.srcs.get(0).dir;
+   if(pdir==360)
+     pdir = 0;
+    String srcSet = "self.lga.SRCVPARTICLES = " + checkDir(pdir,1);
+  gateSet = append(gateSet,srcSet);
+  }
   gateSet = append(gateSet,"r1 = 1");
   gateSet = append(gateSet,"c1 = 1");
   //adding walls to string, one String object per wall
@@ -144,6 +176,25 @@ void lgaExport() //saving last line!!
     dirSet = append(dirSet,thisDir);
     keep = append(keep,1);
   }
+  for(int ii = 0; ii < srcs.srcs.size(); ii++)
+  {
+    Wall wall = srcs.srcs.get(ii);
+    xSet = append(xSet,wall.xPos);
+    ySet = append(ySet,wall.yPos);
+    String thisDir = (checkDir(wall.dir,0));
+    dirSet = append(dirSet,thisDir);
+    keep = append(keep,1);
+    for(int jj = 0; jj<srcs.srcs.size();jj++)
+    {
+      if(srcs.srcs.get(ii).dir != srcs.srcs.get(jj).dir && !(srcs.srcs.get(ii).dir==-3 || srcs.srcs.get(jj).dir==-3))
+     {
+       String warning = "WARNING: LGA does not currently support MULTI directional sources";
+      println(warning);
+      dirSet = append(dirSet,warning);
+     } 
+     }
+  
+  }
   for(int ii = 0; ii<ps.pars.size(); ii ++)
   {
    Particle par = ps.pars.get(ii);
@@ -156,7 +207,6 @@ void lgaExport() //saving last line!!
   //go through and combine
   for(int ii = 0; ii<xSet.length;ii++)
   {
-    println(dirSet[ii]+"x");
     if(ii!=xSet.length-1)
     {
     for(int jj = ii+1; jj<xSet.length;jj++)
@@ -208,7 +258,12 @@ String checkDir(int dir,int wORp)
    case -1:
    return "REV";
    case -2:
-   return "SNK";   
+   return "SNK";
+   case -3:
+   return "SRCA";
+   default:
+   return "SRCV";
+      
    } 
   }
 else{

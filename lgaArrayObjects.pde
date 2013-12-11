@@ -1,11 +1,109 @@
 class Sources
 {
  ArrayList<Wall> srcs = new ArrayList<Wall>();
+ int srcdir = -360;
+ Wall srcDraw = new Wall(0,1,srcdir);
  Sources()
 {
  
 }
+void addNew()
+ {  
+  float scale2 = scale/sin(PI/3);//
+  int y = round(mouseY/float(scale));
+  int x = round(mouseX/scale2); 
+   if(y%2!=0)
+     {x = floor(mouseX/scale2);}
+     boolean alreadyExists = false;
+  for(int ii = 0; ii<srcs.size();ii++)
+  {
+    if(srcs.get(ii).xPos == x && srcs.get(ii).yPos == y)
+    {
+      alreadyExists = true;
+    }
+  }
+  if(!alreadyExists)
+  {
+  srcs.add(new Wall(x,y,srcdir));
+  }
+   
+ }
+ void clearSources()
+ {
+  srcs.clear(); 
+ }
+ void drawSources()
+ {
+    for(int ii = 0; ii<srcs.size();ii++)
+ {
+  srcs.get(ii).drawWall();
+  
+ }
+ srcDraw.drawWall();
+ }
+  void changeSourceDirection()
+ { //-360, -60,-120, -180, -240, - 300, -3, -360
+  if(srcdir==-360)
+  {
+   srcdir = -60;
+  }
+  else if(srcdir == -300)
+  {
+   srcdir = -3; 
+  }
+  else if(srcdir == -3)
+  {srcdir=-360;
+  }
+  else{
+   srcdir-=60; 
+  }
+   
+    srcDraw.dir = srcdir;
 
+ }
+ void eraseAtMouse()
+ {
+    float scale2 = scale/sin(PI/3);//
+   int y = round(mouseY/float(scale));
+  int x = round(mouseX/scale2); 
+  for(int ii = 0; ii<srcs.size();ii++)
+ {
+   
+   if(srcs.get(ii).xPos == x && srcs.get(ii).yPos == y)
+   {
+    srcs.remove(ii);
+    break;
+   }
+ }
+ }
+ void removeLast()
+ {
+   if(srcs.size()>0)
+  srcs.remove(srcs.size()-1); 
+   
+ }
+ void handleSources()
+ {
+  for(int ii = 0; ii<srcs.size(); ii++)
+ { 
+   if(srcs.get(ii).dir == -3)
+   {
+    ps.pars.add(new Particle((int)srcs.get(ii).xPos,(int)srcs.get(ii).yPos,0));
+    ps.pars.add(new Particle((int)srcs.get(ii).xPos,(int)srcs.get(ii).yPos,60));
+    ps.pars.add(new Particle((int)srcs.get(ii).xPos,(int)srcs.get(ii).yPos,120));
+    ps.pars.add(new Particle((int)srcs.get(ii).xPos,(int)srcs.get(ii).yPos,180));
+    ps.pars.add(new Particle((int)srcs.get(ii).xPos,(int)srcs.get(ii).yPos,240));
+    ps.pars.add(new Particle((int)srcs.get(ii).xPos,(int)srcs.get(ii).yPos,300));
+
+   }
+   else{
+   int pdir = -srcs.get(ii).dir;
+   if(pdir==360)
+     pdir = 0;
+  ps.pars.add(new Particle((int)srcs.get(ii).xPos,(int)srcs.get(ii).yPos,pdir));
+   }
+ } 
+ }
   
 }
 
@@ -182,6 +280,7 @@ class Wall extends arrayObject
   int dir = 0; //wall direction(angle in degrees) 0 = EEEE, 30 = EENE
   int drawColor = color(0,0,255);
   int drawColor2 = color(255,40,40);
+  int drawColor3 = color(0,255,0);
   Wall(float x, float y, int a)
   {
     xPos = x;
@@ -217,6 +316,28 @@ class Wall extends arrayObject
    rect(0,0,scale/5,scale/5);
    popMatrix();
    rectMode(CORNER);
+  }
+  else if(dir == -3)
+  {
+   stroke(drawColor3);
+   pushMatrix();
+   translate(startX,startY);
+   rectMode(CENTER);
+   rect(0,0,scale/5,scale/5);
+   popMatrix();
+   rectMode(CORNER);
+  }
+  else if(dir <=-60)
+  {
+   stroke(drawColor3);
+   pushMatrix();
+   translate(startX,startY);
+   rotate(radians(dir));
+   line(0,0,scale/5,0);
+   strokeWeight(1);
+   line(scale/3, 0, scale/5 - scale/9, -scale/7);
+   line(scale/3, 0, scale/5 - scale/9, scale/7);
+   popMatrix();;
   }
   else{
     
@@ -341,6 +462,7 @@ class Particles
  }
  this.checkCollisions();
  this.drawParticles();
+ srcs.handleSources();
  time+=timeStep;
  } 
  void drawParticles()
@@ -354,6 +476,17 @@ class Particles
  
  void reverseDirection() //needs to update 2particle collision matrix
  {
+   
+   if(srcs.srcs.size()>0)
+   {
+    println("WARNING: srcs are not generally reversible"); 
+   }
+   if(rws.rwalls.size()>0)
+   {
+    println("REMINDER: if you are using snks, this processing is irreversible"); 
+   }
+   
+ 
    timeStep = -timeStep;
    int[] change = {};
    int[] par2xchange = {};
@@ -419,10 +552,10 @@ class Particles
    else if(collisionCount2 == 2)
    {
      change[ii] = 2;
-<<<<<<< HEAD
+
      par2xchange = append(par2xchange,(int)pars.get(ii).xPos);
      par2ychange = append(par2ychange,(int)pars.get(ii).yPos);  
-=======
+
      /*
      boolean changex = true;
      boolean changey = true;
@@ -437,7 +570,6 @@ class Particles
      par2ychange = append(par2ychange,(int)pars.get(ii).yPos);
 */
      
->>>>>>> f0adb56e220bf9d1ece519b033c6b39251b35cb9
    }
  }
   for(int ii = 0;ii<pars.size();ii++)
@@ -561,7 +693,18 @@ class Particles
      }
      }
    }
-   int collisionCount3 = 0; //<>//
+   for(int kk = 0; kk<srcs.srcs.size();kk++)
+   {
+     
+     if(pars.get(ii).xPos == srcs.srcs.get(kk).xPos && pars.get(ii).yPos == srcs.srcs.get(kk).yPos)
+     {
+      hitWall = true;
+      println("source Collision at: "+ pars.get(ii).xPos + "," + pars.get(ii).yPos);
+     //handle src collision removal 
+      pars.get(ii).newdir=-1; 
+     }
+   }
+   int collisionCount3 = 0; 
    int collisionCount2 = 0;
 if(!hitWall)
 {
