@@ -63,25 +63,26 @@ class GUI
 
   void setupButtons()
   {
-    buttons.add(new Button(xGUIStart+buffer,yGUIStart+buffer+buttonH,buttonW,buttonH,"TogDrawMode"));
-    buttons.add(new Button(xGUIStart+buffer+buttonW,yGUIStart+buffer+buttonH,buttonW,buttonH,"OneStep"));
-    buttons.add(new Button(xGUIStart+buffer+2*buttonW,yGUIStart+buffer+buttonH,buttonW,buttonH,"SaveAll"));
-    buttons.add(new Button(xGUIStart+buffer+3*buttonW,yGUIStart+buffer+buttonH,buttonW,buttonH,"loadAll"));
-    buttons.add(new Button(xGUIStart+buffer+4*buttonW,yGUIStart+buffer+buttonH,buttonW,buttonH,"changeFile"));
-    buttons.add(new Button(xGUIStart+buffer+5*buttonW,yGUIStart+buffer+buttonH,buttonW,buttonH,"exportLGA"));
-    buttons.add(new Button(xGUIStart+buffer+6*buttonW,yGUIStart+buffer+buttonH,buttonW,buttonH,"run"));
+    buttons.add(new Button(xGUIStart+buffer+0*buttonW,yGUIStart+buffer+buttonH,buttonW,buttonH,"TogDrawMode"));
+    buttons.add(new Button(xGUIStart+buffer+1*buttonW,yGUIStart+buffer+buttonH,buttonW,buttonH,"rotateParticle"));
+    buttons.add(new Button(xGUIStart+buffer+2*buttonW,yGUIStart+buffer+buttonH,buttonW,buttonH,"rotateWall"));
+    buttons.add(new Button(xGUIStart+buffer+3*buttonW,yGUIStart+buffer+buttonH,buttonW,buttonH,"togRevSnk"));
+    buttons.add(new Button(xGUIStart+buffer+4*buttonW,yGUIStart+buffer+buttonH,buttonW,buttonH,"rotateSource"));
+    buttons.add(new Button(xGUIStart+buffer+5*buttonW,yGUIStart+buffer+buttonH,buttonW,buttonH,"reverseParticles"));
+    buttons.add(new Button(xGUIStart+buffer+6*buttonW,yGUIStart+buffer+buttonH,buttonW,buttonH,"changeScale"));
     buttons.add(new Button(xGUIStart+buffer+7*buttonW,yGUIStart+buffer+buttonH,buttonW,buttonH,"clearAll"));
 
-    buttons.add(new Button(xGUIStart+buffer,yGUIStart+buffer+2*buttonH,buttonW,buttonH,"reverseParticles"));
-    buttons.add(new Button(xGUIStart+buffer+buttonW,yGUIStart+buffer+2*buttonH,buttonW,buttonH,"rotateParticle"));
-    buttons.add(new Button(xGUIStart+buffer+2*buttonW,yGUIStart+buffer+2*buttonH,buttonW,buttonH,"rotateWall"));
-    buttons.add(new Button(xGUIStart+buffer+3*buttonW,yGUIStart+buffer+2*buttonH,buttonW,buttonH,"toggleGrid"));
-    buttons.add(new Button(xGUIStart+buffer+4*buttonW,yGUIStart+buffer+2*buttonH,buttonW,buttonH,"changeScale"));
-    buttons.add(new Button(xGUIStart+buffer+5*buttonW,yGUIStart+buffer+2*buttonH,buttonW,buttonH,"runSpeedUp"));
-    buttons.add(new Button(xGUIStart+buffer+6*buttonW,yGUIStart+buffer+2*buttonH,buttonW,buttonH,"runSpeedDown"));
-    buttons.add(new Button(xGUIStart+buffer+7*buttonW,yGUIStart+buffer+2*buttonH,buttonW,buttonH,"togRevSnk"));
-    buttons.add(new Button(xGUIStart+buffer+buttonW,yGUIStart+buffer+3*buttonH,buttonW,buttonH,"rotateSource"));
-    
+    buttons.add(new Button(xGUIStart+buffer+0*buttonW,yGUIStart+buffer+2*buttonH,buttonW,buttonH,"OneStep"));
+    buttons.add(new Button(xGUIStart+buffer+1*buttonW,yGUIStart+buffer+2*buttonH,buttonW,buttonH,"run"));
+    buttons.add(new Button(xGUIStart+buffer+2*buttonW,yGUIStart+buffer+2*buttonH,buttonW,buttonH,"runSpeedUp"));
+    buttons.add(new Button(xGUIStart+buffer+3*buttonW,yGUIStart+buffer+2*buttonH,buttonW,buttonH,"runSpeedDown"));
+    buttons.add(new Button(xGUIStart+buffer+4*buttonW,yGUIStart+buffer+2*buttonH,buttonW,buttonH,"changeFile"));
+    buttons.add(new Button(xGUIStart+buffer+5*buttonW,yGUIStart+buffer+2*buttonH,buttonW,buttonH,"SaveAll"));
+    buttons.add(new Button(xGUIStart+buffer+6*buttonW,yGUIStart+buffer+2*buttonH,buttonW,buttonH,"loadAll"));
+    buttons.add(new Button(xGUIStart+buffer+7*buttonW,yGUIStart+buffer+2*buttonH,buttonW,buttonH,"exportLGA"));
+        
+    buttons.add(new Button(xGUIStart+buffer+0*buttonW,yGUIStart+buffer+3*buttonH,buttonW,buttonH,"toggleGrid"));
+
   }
   boolean isinGUI() //used to ensure that particles/walls are not placed within the gui;
   {

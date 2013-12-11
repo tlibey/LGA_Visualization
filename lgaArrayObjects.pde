@@ -503,11 +503,25 @@ class Particles
     if(pars.get(ii).xPos == ws.walls.get(jj).xPos && pars.get(ii).yPos == ws.walls.get(jj).yPos && (pars.get(ii).dir-ws.walls.get(jj).dir)%180 != 0)
    {
     hitWall = true;
+    int revpardir = pars.get(ii).dir+180;
+    if(revpardir>=360)
+      {
+       revpardir -=360; 
+      }
+    pars.get(ii).dir = wallTable(ws.walls.get(jj).dir,revpardir);
+
    } 
    }
    for(int jj = 0; jj<rws.rwalls.size();jj++)
    {
     if(pars.get(ii).xPos == rws.rwalls.get(jj).xPos && pars.get(ii).yPos == rws.rwalls.get(jj).yPos)
+   {
+    hitWall = true;
+   } 
+   }
+   for(int jj = 0; jj<srcs.srcs.size();jj++)
+   {
+    if(pars.get(ii).xPos == srcs.srcs.get(jj).xPos && pars.get(ii).yPos == srcs.srcs.get(jj).yPos)
    {
     hitWall = true;
    } 
@@ -544,7 +558,6 @@ class Particles
       }
      }
    }
-   
    if(hitWall || collisionCount3==3)
    {
      change[ii] = 0;

@@ -19,7 +19,6 @@ Thanks!
 //To implement
 /*
 2) comments/clean code
-7) cleaned up ui/button order
 
 Limitations
 **take care to set your r1 and c1 values to match your refl walls based on your drawing. 

@@ -3,6 +3,8 @@
 
 void saveAll()
 {
+  //if forgot to hit enter when changing file name
+  gettingString = false;
   String fName = workingFile;
   String[] gateSet = {};
   //adding walls to string, one String object per wall
@@ -38,6 +40,8 @@ void saveAll()
 
 void loadFile()
 {
+  //if forgot to hit enter when changing file name
+  gettingString = false;
   //clear old data
   ws.walls.clear();
   ps.pars.clear();
@@ -84,6 +88,8 @@ void loadFile()
 
 void lgaExport() //saving last line!!
 {
+  //if forgot to hit enter when changing file name
+  gettingString = false;
   //find top left most point
   float xS = 1000;
   float yS = 1000;
