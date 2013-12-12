@@ -1,3 +1,16 @@
+/*This file (lgaArrayObjects.pde) defines the following classes and associated functionality
+Sources
+RevWalls (includes sinks)
+Walls (reflective walls)
+Particles
+
+and the primitives:
+Particle (one particle): sets parameters and draws the particle
+Wall (one wall): sets parameters and draws the wall
+ArrayObject: inherited base class; could probably be removed if necessary; 
+*/
+
+
 class Sources
 {
  ArrayList<Wall> srcs = new ArrayList<Wall>();

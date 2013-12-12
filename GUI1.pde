@@ -1,16 +1,18 @@
+//this file(GUI1.pde) defines the graphical user interface seen by the program
 class GUI
 {
- ArrayList<Button> buttons = new ArrayList<Button>(); 
- float xGUIStart;
+ ArrayList<Button> buttons = new ArrayList<Button>(); //stores all buttons
+ //control pannel locations
+ float xGUIStart; 
  float yGUIStart;
 
- float buttonH;
- float buttonW;
- int buffer;
- int lastPress = 0;
- int fontSize;
+ float buttonH; //button height
+ float buttonW; //button width
+ int buffer; //spacing around buttons, not super effective
+ int lastPress = 0; //prevents overclicking of buttons, 
+ int fontSize; //gui fontsize based on height of display
  int runSpeed = 10; //number of frames to skip between particle updates, decreas # to increase speed %%%%%%%
- boolean gridOn = true;
+ boolean gridOn = true; //control loop flag determining whether to draw grid
   GUI()
   {
     
@@ -20,7 +22,7 @@ class GUI
     buttonH = height/30;
     buttonW = (width-2*buffer)/8;
     fontSize = height/50;
-    setupButtons();
+    setupButtons(); //initializes all buttons, this is the function to change to add buttons
     
   }
   void updateGUI()
@@ -28,31 +30,30 @@ class GUI
     if(gridOn)
      this.drawGrid();
      
-    this.showButtons();
-    this.checkButtons(); 
+    this.showButtons(); //display all buttons
+    this.checkButtons(); //if button is pressed, execute function
     
   }
   
   void drawGrid()
 {
-  stroke(0); 
-   strokeWeight(1);
-
-  int sp = scale;
-  for(int ii = sp; ii< height; ii+=sp)
+  stroke(0); //black lines
+   strokeWeight(1); //thin lines
+  //draw lines based on set scale
+  for(int ii = scale; ii< height; ii+=scale)
     {
       line(4,ii,width,ii);
     }
    pushMatrix();
    rotate(PI*60/180);
-    for(int ii = -2*height; ii< height; ii+=sp)
+    for(int ii = -2*height; ii< height; ii+=scale)
     {
       line(4,ii,2*width,ii);
     }
    popMatrix();
      pushMatrix();
    rotate(-PI*60/180);
-    for(int ii = 0; ii< 2*height; ii+=sp)
+    for(int ii = 0; ii< 2*height; ii+=scale)
     {
       line(-width,ii,2*width,ii);
     }
@@ -63,6 +64,8 @@ class GUI
 
   void setupButtons()
   {
+    //create all of the buttons and add them to the arraylist called "buttons" offset in x by #*buttonW, similar in y
+    //button name here must be the same as in checkButtons() to ensure it will be called
     buttons.add(new Button(xGUIStart+buffer+0*buttonW,yGUIStart+buffer+buttonH,buttonW,buttonH,"TogDrawMode"));
     buttons.add(new Button(xGUIStart+buffer+1*buttonW,yGUIStart+buffer+buttonH,buttonW,buttonH,"rotateParticle"));
     buttons.add(new Button(xGUIStart+buffer+2*buttonW,yGUIStart+buffer+buttonH,buttonW,buttonH,"rotateWall"));
@@ -82,10 +85,12 @@ class GUI
     buttons.add(new Button(xGUIStart+buffer+7*buttonW,yGUIStart+buffer+2*buttonH,buttonW,buttonH,"exportLGA"));
         
     buttons.add(new Button(xGUIStart+buffer+0*buttonW,yGUIStart+buffer+3*buttonH,buttonW,buttonH,"toggleGrid"));
-    //stat buttons (have to be last added)
-    buttons.add(new Button(xGUIStart+buffer+1*buttonW,yGUIStart+buffer+3*buttonH,buttonW,buttonH,"particleCount"));
-    buttons.add(new Button(xGUIStart+buffer+2*buttonW,yGUIStart+buffer+3*buttonH,buttonW,buttonH,"leftCount"));
-    buttons.add(new Button(xGUIStart+buffer+3*buttonW,yGUIStart+buffer+3*buttonH,buttonW,buttonH,"rightCount"));
+    //functional buttons (have to be last added since name of button changes to display a value)
+    buttons.add(new Button(xGUIStart+buffer+1*buttonW,yGUIStart+buffer+3*buttonH,buttonW,buttonH,"ContSave"+continuousSave));
+    //stat buttons these display particle counts, but feasibly any stat could be displayed here if it is calculated
+    buttons.add(new Button(xGUIStart+buffer+2*buttonW,yGUIStart+buffer+3*buttonH,buttonW,buttonH,"particleCount"));
+    buttons.add(new Button(xGUIStart+buffer+3*buttonW,yGUIStart+buffer+3*buttonH,buttonW,buttonH,"leftCount"));
+    buttons.add(new Button(xGUIStart+buffer+4*buttonW,yGUIStart+buffer+3*buttonH,buttonW,buttonH,"rightCount"));
 
   }
   boolean isinGUI() //used to ensure that particles/walls are not placed within the gui;
@@ -97,13 +102,14 @@ class GUI
     }
     return false;
   }
-  void showButtons()
+  void showButtons() //displays all buttons
   {
     fill(255);
     stroke(0);
-    rect(xGUIStart,yGUIStart,width,height-buffer);
+    rect(xGUIStart,yGUIStart,width,height-buffer); //gui space (overwrites drawgrid with white rectangle
     textFont(font,fontSize);
     fill(0);
+    //display the current mode in top left of gui
     String modeDisp = "Particle";
     if(modeToggle==0)
         modeDisp = "Wall";
@@ -113,29 +119,31 @@ class GUI
         modeDisp = "Source";
     textAlign(LEFT);
     text("Mode: " + modeDisp, buffer, yGUIStart + 4*buffer);
+    //display the current number of time steps in center of gui
     textAlign(CENTER);
     text("Time: "+ps.time,width/2,yGUIStart+4*buffer);
+    //display current working file in top right of gui
     textAlign(RIGHT);
     text("CurrentFile: "+workingFile,width-buffer,yGUIStart+4*buffer);
+    calculateStatText(); //called separately for organization, updates text of stat buttons
    for(int ii= 0; ii<buttons.size(); ii ++)
   {
     buttons.get(ii).showButton();
   } 
-  showStats();
   }
   
-  void showStats()
+  void calculateStatText()
   {
-      buttons.get(buttons.size()-3).bText = "all par"+ps.pars.size();
+      buttons.get(buttons.size()-3).bText = "all par"+ps.pars.size(); //but the total number of particles in the textbox
       int lefts = 0;
       int rights = 0;
-      for(int ii = 0; ii<ps.pars.size();ii++)
+      for(int ii = 0; ii<ps.pars.size();ii++) //itterate over all particles
       {
-       if(ps.pars.get(ii).xPos>24)
+       if(ps.pars.get(ii).xPos>24) //if particles are further right than column 24 add to the right count
       {
        rights++;
       } 
-      else if(ps.pars.get(ii).xPos<20)
+      else if(ps.pars.get(ii).xPos<20)//if particles are further left than column 20 add to the left count
       {
        lefts++; 
       }
@@ -146,20 +154,20 @@ class GUI
     
   }
   
-  void checkButtons()
+  void checkButtons() 
   {
     String pressed = "";
    for(int ii = 0; ii<buttons.size(); ii ++)
   {
-   if(buttons.get(ii).isPressed())
+   if(buttons.get(ii).isPressed()) //isPressed defined in button class in input.pde file
    {
      pressed = buttons.get(ii).bText;
    }
   } 
-  if(pressed!= "" && lastPress<millis()-300)
+  if(pressed!= "" && lastPress<millis()-300) //ensures buttons are not double pressed or blank
   {
-   lastPress = millis();
-   if(pressed=="TogDrawMode"){
+   lastPress = millis(); //reset lastPress
+   if(pressed=="TogDrawMode"){ //alternate between drawmodes
          modeToggle ++;
          if(modeToggle>3)
             modeToggle = 0; 
@@ -172,16 +180,16 @@ class GUI
         else if(modeToggle ==3)
         {println("SrcMode");}
    }
-   else if(pressed == "OneStep"){
+   else if(pressed == "OneStep"){ //time++; moves particles, checks collisions and draws particles
     ps.updateParticles(ws);
   
    }
-   else if(pressed == "SaveAll")
+   else if(pressed == "SaveAll") //saves all objects to current working file name
    {
     saveAll();
      
    }
-    else if(pressed == "loadAll")
+    else if(pressed == "loadAll") //clears current display and loads all objects from file with the current working file name
    {
     ws.clearWalls();
     ps.clearParticles();
@@ -192,21 +200,21 @@ class GUI
     ps.timeStep = 1;
      
    }
-   else if(pressed == "changeFile")
+   else if(pressed == "changeFile") //initiates text input functionality so file name can be changed
    {
     gettingString = true; 
     stringbuffer = "";
      
    } 
-   else if(pressed == "exportLGA")
+   else if(pressed == "exportLGA") //creates lga export file to current working file name(adds _exp) before file extension
    {
     lgaExport();
    }
-   else if(pressed == "run")
+   else if(pressed == "run") //toggles boolean trigger that allows the program to run continously
    {
     runContinuously = !runContinuously; 
    } 
-   else if(pressed == "clearAll")
+   else if(pressed == "clearAll") //clears all objects
    {
     ws.clearWalls();
     ps.clearParticles();
@@ -214,50 +222,66 @@ class GUI
     srcs.clearSources();
 
    }
-   else if(pressed == "reverseParticles")
+   else if(pressed == "reverseParticles") //reverses all particle directions such that process is reversible 
+   //**see notes in lgaArrayObjects file under reverseParticles function in the Particles Class
    {
      
     ps.reverseDirection(); 
    }
-   else if(pressed == "rotateParticle")
+   else if(pressed == "rotateParticle") //changes the particle drawing direction
    {
      
    ps.changeDrawDirection(); 
    }
-   else if(pressed == "rotateWall")
+   else if(pressed == "rotateWall") //changes the wall drawing direction
    {
      
    ws.changeDrawDirection(); 
    } 
-   else if(pressed == "rotateSource")
+   else if(pressed == "rotateSource")//changes the source drawing direction
    {
      
    srcs.changeSourceDirection(); 
    }
-   else if(pressed == "toggleGrid")
+    else if(pressed == "togRevSnk") //toggles between drawing REV walls and SNKs
+   {
+     rws.toggleType();   
+   } 
+   else if(pressed == "toggleGrid") //determines whether or not to draw background hexagonal lattice grid
    {
      this.gridOn = !this.gridOn;     
    }
-   else if(pressed == "changeScale")
+   else if(pressed == "changeScale") //alternates between 40px and 20px grid sizes, additional options commented out below
    {
+     //setting scale to 30 does not work on my machines, but may add additional options
      scale = scale/2;
      if(scale<20)
-        scale = 40;     
+        scale = 40;  
+     
+     //3 size scale system, for good monitors
+     scale = scale/2;
+     if(scale<10)
+       scale = 40;
+        
    }
-   else if(pressed == "runSpeedUp")
+   else if(pressed == "runSpeedUp") //skip less frames when running continuously
    {
      this.runSpeed--; 
   if(runSpeed<1)
       runSpeed = 1;  
    }
-   else if(pressed == "runSpeedDown")
+   else if(pressed == "runSpeedDown") //skip more frames when running continuously
    {
      this.runSpeed++;    
    }
-   else if(pressed == "togRevSnk")
+  
+   else if(pressed.equals("ContSave"+continuousSave)) //toggles continuous save mode
    {
-     rws.toggleType();   
-   }    
+     continuousSave = !continuousSave;
+     buttons.get(buttons.size()-4).bText = "ContSave"+continuousSave;
+    println("ContSave"+continuousSave);
+   }
+   
      
      
    

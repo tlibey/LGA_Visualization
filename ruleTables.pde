@@ -1,3 +1,5 @@
+//this file(ruleTables.pde) defines the rules behind refl wall collisions
+
  int wallTable(int wd,int pd)
  {
   switch(wd){
