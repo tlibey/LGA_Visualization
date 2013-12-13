@@ -54,7 +54,7 @@ boolean runContinuously = false; //boolean flag for draw() loop. can be changed 
 boolean continuousSave = false; //boolean control flag for draw() loop. can be changed in program. saves every 100 frames to prevent data loss
 void setup()
 {
- size(700,500); //change here to find a display that works for you! divisible by 20 seems to keep grid alligned, but may be different
+ size(700,600); //change here to find a display that works for you! divisible by 20 seems to keep grid alligned, but may be different
   font = createFont("Arial",16,true); //setting up fontsize and type, 16 designates default font size which is normally overwritten in code
   ps.setup2parMatrix(); // calls the Particles() function that sets up the 2 dimensional state matrix for 2 particle collisions
 gui = new GUI(); //initializes Gui

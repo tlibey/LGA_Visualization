@@ -259,9 +259,9 @@ class GUI
         scale = 40;  
      
      //3 size scale system, for good monitors
-     scale = scale/2;
-     if(scale<10)
-       scale = 40;
+    // scale = scale/2;
+   //  if(scale<10)
+    //   scale = 40;
         
    }
    else if(pressed == "runSpeedUp") //skip less frames when running continuously
