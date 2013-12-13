@@ -68,7 +68,7 @@ void draw()
   ws.drawDrawingParameters(); // draws the template wall in top left corner
   if(runContinuously && frameCount % gui.runSpeed == 0) //runs continuously if enabled
   {
-   ps.updateParticles(ws); //move particles, check for collisions, drawparticles
+   ps.updateParticles(); //move particles, check for collisions, drawparticles
   }
   //if not continuous then just draw everything:
    ps.drawParticles(); 

@@ -117,7 +117,7 @@ void handleInput() //see instructions at beggining of LGA_Visualization.pde file
 {
   if(checkKey(' ') && KeyPressLock(500))
   {
-   ps.updateParticles(ws); 
+   ps.updateParticles(); 
   }
   if(checkKey('T') && KeyPressLock(500))
   {

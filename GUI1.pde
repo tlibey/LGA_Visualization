@@ -181,7 +181,7 @@ class GUI
         {println("SrcMode");}
    }
    else if(pressed == "OneStep"){ //time++; moves particles, checks collisions and draws particles
-    ps.updateParticles(ws);
+    ps.updateParticles();
   
    }
    else if(pressed == "SaveAll") //saves all objects to current working file name
